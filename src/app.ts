@@ -62,4 +62,10 @@ export class App {
 		this.server = this.app.listen(this.port);
 		this.logger.log(`[APP] Server is running on port ${this.port}`);
 	}
+
+	async close(): Promise<void> {
+		await this.notificationService.stopNotificationEngine();
+		await this.mongooseService.closeConnection();
+		await new Promise((resolve) => this.server.close(resolve));
+	}
 }
