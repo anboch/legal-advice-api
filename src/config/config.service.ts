@@ -11,9 +11,9 @@ export interface IConfigService {
 
 @injectable()
 export class ConfigService implements IConfigService {
-	private config: DotenvParseOutput;
+	private config: DotenvParseOutput = {};
 	constructor(@inject(TYPES.ILogger) private logger: ILogger) {
-		const envConfigOptions: DotenvConfigOptions | undefined = {};
+		const envConfigOptions: DotenvConfigOptions = {};
 
 		if (process.env.NODE_ENV === 'test') {
 			envConfigOptions.path = path.resolve(process.cwd(), '.env.test');
@@ -22,6 +22,7 @@ export class ConfigService implements IConfigService {
 		const result: DotenvConfigOutput = config(envConfigOptions);
 		if (result.error) {
 			this.logger.error('[ConfigService] Failed to read .env file or it is missing');
+			this.config = {};
 		} else {
 			this.logger.log('[ConfigService] Config .env loaded');
 			this.config = result.parsed as DotenvParseOutput;
