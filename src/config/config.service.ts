@@ -13,19 +13,16 @@ export interface IConfigService {
 export class ConfigService implements IConfigService {
 	private config: DotenvParseOutput = {};
 	constructor(@inject(TYPES.ILogger) private logger: ILogger) {
-		const envConfigOptions: DotenvConfigOptions = {};
-
-		if (process.env.NODE_ENV === 'test') {
-			envConfigOptions.path = path.resolve(process.cwd(), '.env.test');
-		}
-
-		const result: DotenvConfigOutput = config(envConfigOptions);
+		const result: DotenvConfigOutput = config();
 		if (result.error) {
 			this.logger.error('[ConfigService] Failed to read .env file or it is missing');
 			this.config = {};
 		} else {
 			this.logger.log('[ConfigService] Config .env loaded');
 			this.config = result.parsed as DotenvParseOutput;
+			if (this.config['NODE_ENV'] === 'test') {
+				process.env.NODE_ENV = 'test';
+			}
 		}
 	}
 

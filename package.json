@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./dist/src/main.js",
+    "start:test": "set NODE_ENV=test&& node ./dist/src/main.js",
     "dev": "nodemon",
+    "dev:test": "set NODE_ENV=test&& nodemon",
     "build": "tsc",
     "test": "jest",
     "test:e2e": "jest --config jest.e2e.config.ts --runInBand"
