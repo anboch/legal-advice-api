@@ -11,6 +11,7 @@ import { IExceptionFilter } from './errors/exception.filter';
 import { UserController } from './user/user.controller';
 import { AuthMiddleware } from './common/auth.middleware';
 import { MongooseService } from './database/mongoose.service';
+import { MeetingController } from './meeting/meeting.controller';
 
 @injectable()
 export class App {
@@ -24,6 +25,7 @@ export class App {
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.MongooseService) private mongooseService: MongooseService,
 		@inject(TYPES.UserController) private userController: UserController,
+		@inject(TYPES.MeetingController) private meetingController: MeetingController,
 	) {
 		this.app = express();
 		this.port = Number(this.configService.get('PORT')) || 5000;
@@ -42,6 +44,7 @@ export class App {
 
 	useRoutes(): void {
 		this.app.use('/user', this.userController.router);
+		this.app.use('/meeting', this.meetingController.router);
 	}
 
 	useExceptionFilters(): void {

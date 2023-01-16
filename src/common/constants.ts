@@ -7,8 +7,12 @@ export const TYPES = {
 	UserController: Symbol.for('UserController'),
 	UserService: Symbol.for('UserService'),
 	UserRepository: Symbol.for('UserRepository'),
+	MeetingController: Symbol.for('MeetingController'),
+	MeetingService: Symbol.for('MeetingService'),
+	MeetingRepository: Symbol.for('MeetingRepository'),
 };
 
 export const collectionNames = {
 	USER: 'users',
+	MEETING: 'meetings',
 } as const;

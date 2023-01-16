@@ -6,6 +6,9 @@ import { ConfigService, IConfigService } from './config/config.service';
 import { MongooseService } from './database/mongoose.service';
 import { ExceptionFilter, IExceptionFilter } from './errors/exception.filter';
 import { ILogger, LoggerService } from './logger/logger.service';
+import { IMeetingsController, MeetingController } from './meeting/meeting.controller';
+import { IMeetingRepository, MeetingRepository } from './meeting/meeting.repository';
+import { IMeetingService, MeetingService } from './meeting/meeting.service';
 import { TYPES } from './common/constants';
 import { UserController, IUserController } from './user/user.controller';
 import { UserRepository, IUserRepository } from './user/user.repository';
@@ -24,6 +27,9 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUserController>(TYPES.UserController).to(UserController);
 	bind<IUserService>(TYPES.UserService).to(UserService);
 	bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
+	bind<IMeetingsController>(TYPES.MeetingController).to(MeetingController);
+	bind<IMeetingService>(TYPES.MeetingService).to(MeetingService);
+	bind<IMeetingRepository>(TYPES.MeetingRepository).to(MeetingRepository).inSingletonScope();
 	bind<App>(TYPES.Application).to(App);
 });
 
