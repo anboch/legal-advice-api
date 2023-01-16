@@ -60,7 +60,6 @@ export class UserController extends BaseController implements IUserController {
 		}
 		const createdUser = await this.userService.createUser(body);
 		this.send(res, 200, {
-			userId: createdUser._id,
 			fullName: createdUser?.fullName,
 			phoneNumber: createdUser?.phoneNumber,
 		});

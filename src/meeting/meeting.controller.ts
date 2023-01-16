@@ -38,14 +38,14 @@ export class MeetingController extends BaseController implements IMeetingsContro
 		res: Response,
 		next: NextFunction,
 	): Promise<void> {
-		const lawyer = await this.userService.getUserById(body.lawyerId);
+		const lawyer = await this.userService.getUserByPhone(body.lawyerPhoneNumber);
 		if (lawyer?.role !== Role.LAWYER) {
-			return next(new HTTPError(400, 'Wrong lawyer Id'));
+			return next(new HTTPError(400, 'Wrong lawyer phoneNumber'));
 		}
 
-		const client = await this.userService.getUserById(body.clientId);
+		const client = await this.userService.getUserByPhone(body.clientPhoneNumber);
 		if (client?.role !== Role.CLIENT) {
-			return next(new HTTPError(400, 'Wrong client Id'));
+			return next(new HTTPError(400, 'Wrong client phoneNumber'));
 		}
 
 		if (body.time < Date.now()) {
@@ -54,7 +54,7 @@ export class MeetingController extends BaseController implements IMeetingsContro
 
 		const isTimeAvailableForLawyer = await this.meetingService.isTimeAvailable(
 			body.time,
-			body.lawyerId,
+			lawyer._id,
 		);
 		if (!isTimeAvailableForLawyer) {
 			return next(new HTTPError(400, 'This time is not available for lawyer'));
@@ -62,7 +62,7 @@ export class MeetingController extends BaseController implements IMeetingsContro
 
 		const isTimeAvailableForClient = await this.meetingService.isTimeAvailable(
 			body.time,
-			body.clientId,
+			client._id,
 		);
 		if (!isTimeAvailableForClient) {
 			return next(new HTTPError(400, 'This time is not available for client'));

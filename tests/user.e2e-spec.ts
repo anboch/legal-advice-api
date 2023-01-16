@@ -44,7 +44,6 @@ describe('User e2e', () => {
 		expect(res.statusCode).toBe(200);
 		expect(res.body.fullName).toEqual(rightDataForRegister.fullName);
 		expect(res.body.phoneNumber).toEqual(rightDataForRegister.phoneNumber);
-		expect(res.body.userId).not.toBeUndefined();
 	});
 
 	it('Registration should failed - user already exist', async () => {

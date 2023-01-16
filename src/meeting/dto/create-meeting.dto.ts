@@ -1,11 +1,11 @@
-import { IsMongoId, IsNumber, Max, Min } from 'class-validator';
+import { IsNumber, IsPhoneNumber, Max, Min } from 'class-validator';
 
 export class CreateMeetingDto {
-	@IsMongoId()
-	clientId: string;
+	@IsPhoneNumber()
+	clientPhoneNumber: string;
 
-	@IsMongoId()
-	lawyerId: string;
+	@IsPhoneNumber()
+	lawyerPhoneNumber: string;
 
 	@IsNumber()
 	@Min(1000000000000, { message: 'time must be equal to 13 characters' })

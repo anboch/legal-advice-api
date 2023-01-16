@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
+import mongoose from 'mongoose';
 
 import { TYPES } from '../common/constants';
 import { IMeetingRepository } from './meeting.repository';
@@ -74,7 +75,7 @@ describe('Meeting Service', () => {
 		for (const time of desireFreeTimes) {
 			const isTimeAvailable = await meetingService.isTimeAvailable(
 				time,
-				'63c0755b543d376b66093161',
+				new mongoose.Types.ObjectId('63c0755b543d376b66093161'),
 			);
 			expect(isTimeAvailable).toBeTruthy();
 		}
@@ -86,7 +87,7 @@ describe('Meeting Service', () => {
 		for (const time of desireBusyTimes) {
 			const isTimeAvailable = await meetingService.isTimeAvailable(
 				time,
-				'63c0755b543d376b66093161',
+				new mongoose.Types.ObjectId('63c0755b543d376b66093161'),
 			);
 			expect(isTimeAvailable).toBeFalsy();
 		}

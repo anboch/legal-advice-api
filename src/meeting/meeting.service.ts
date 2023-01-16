@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
 
 import { TYPES } from '../common/constants';
 import { Meeting } from './meeting.entity';
@@ -9,7 +10,7 @@ import { NotificationService } from '../notification/notification.service';
 import { User } from '../user/user.entity';
 
 export interface IMeetingService {
-	isTimeAvailable: (time: number, userId: string) => Promise<boolean>;
+	isTimeAvailable: (time: number, userId: mongoose.Types.ObjectId) => Promise<boolean>;
 	makeAppointment: (data: CreateMeetingDto, client: User, lawyer: User) => Promise<Meeting>;
 }
 
@@ -20,7 +21,7 @@ export class MeetingService implements IMeetingService {
 		@inject(TYPES.MeetingRepository) private meetingRepository: IMeetingRepository,
 	) {}
 
-	async isTimeAvailable(desiredTime: number, userId: string): Promise<boolean> {
+	async isTimeAvailable(desiredTime: number, userId: mongoose.Types.ObjectId): Promise<boolean> {
 		const userSchedule = await this.meetingRepository.getAllForUser(userId);
 		const meetingDuration = 40 * 60 * 1000;
 		const crossMeeting = userSchedule.find(

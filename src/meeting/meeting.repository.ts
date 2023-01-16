@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
+import mongoose from 'mongoose';
 
 import { collectionNames, TYPES } from '../common/constants';
 import { MongooseService } from '../database/mongoose.service';
@@ -8,7 +9,7 @@ import { CreateMeetingDto } from './dto/create-meeting.dto';
 
 export interface IMeetingRepository {
 	create: (data: CreateMeetingDto) => Promise<Meeting>;
-	getAllForUser: (userId: string) => Promise<Meeting[]>;
+	getAllForUser: (userId: mongoose.Types.ObjectId) => Promise<Meeting[]>;
 }
 
 @injectable()
@@ -27,7 +28,7 @@ export class MeetingRepository implements IMeetingRepository {
 		return newMeeting.save();
 	}
 
-	async getAllForUser(userId: string): Promise<Meeting[]> {
+	async getAllForUser(userId: mongoose.Types.ObjectId): Promise<Meeting[]> {
 		return this.meetingModel.find({ $or: [{ clientId: userId }, { lawyerId: userId }] }).exec();
 	}
 }

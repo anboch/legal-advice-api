@@ -12,7 +12,6 @@ const client = {
 	phoneNumber: '+79994567891',
 	password: 'password',
 	lawArea: [],
-	userId: '',
 	jwt: '',
 };
 
@@ -22,13 +21,12 @@ const lawyer = {
 	phoneNumber: '+79994567892',
 	password: 'password',
 	lawArea: ['Административное право', 'Семейное право'],
-	userId: '',
 	jwt: '',
 };
 
 const wrongDataForSignUp = {
-	clientId: '',
-	lawyerId: '',
+	clientPhoneNumber: '+7111111',
+	lawyerPhoneNumber: '+71129999988888888',
 	time: 1675228860,
 };
 
@@ -39,7 +37,6 @@ beforeAll(async () => {
 	// register and login users
 	for (const user of [client, lawyer]) {
 		const registerResponse = await request(application.app).post('/user/register').send(user);
-		user.userId = registerResponse.body.userId;
 		const loginResponse = await request(application.app).post('/user/login').send({
 			phoneNumber: user.phoneNumber,
 			password: user.password,
@@ -61,8 +58,12 @@ describe('Meeting e2e', () => {
 			.set('Authorization', `Bearer ${client.jwt}`)
 			.send(wrongDataForSignUp);
 		expect(res.statusCode).toBe(422);
-		expect(res.body[0].constraints.isMongoId).toBe('clientId must be a mongodb id');
-		expect(res.body[1].constraints.isMongoId).toBe('lawyerId must be a mongodb id');
+		expect(res.body[0].constraints.isPhoneNumber).toBe(
+			'clientPhoneNumber must be a valid phone number',
+		);
+		expect(res.body[1].constraints.isPhoneNumber).toBe(
+			'lawyerPhoneNumber must be a valid phone number',
+		);
 		expect(res.body[2].constraints.min).toBe('time must be equal to 13 characters');
 	});
 
@@ -72,8 +73,8 @@ describe('Meeting e2e', () => {
 			.post('/meeting/sign-up')
 			.set('Authorization', `Bearer ${client.jwt}`)
 			.send({
-				clientId: client.userId,
-				lawyerId: lawyer.userId,
+				clientPhoneNumber: client.phoneNumber,
+				lawyerPhoneNumber: lawyer.phoneNumber,
 				time: desireTime,
 			});
 		expect(res.statusCode).toBe(201);

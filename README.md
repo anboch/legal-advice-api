@@ -55,11 +55,11 @@
 
 Тело запроса должно содержать:
 
-	clientId: string;
-	lawyerId: string;
+	clientPhoneNumber: string;
+	lawyerPhoneNumber: string;
     time: number;
 
-
+time in Unix Timestamp in Milliseconds. [converter](https://www.unixtimestamp.com/)
 ## - Напоминания
 Напоминания за 2 часа и за день до консультации записываются в файл reminders.log в корне проекта.
 
