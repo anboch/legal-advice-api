@@ -12,6 +12,7 @@ import { UserController } from './user/user.controller';
 import { AuthMiddleware } from './common/auth.middleware';
 import { MongooseService } from './database/mongoose.service';
 import { MeetingController } from './meeting/meeting.controller';
+import { NotificationService } from './notification/notification.service';
 
 @injectable()
 export class App {
@@ -24,6 +25,7 @@ export class App {
 		@inject(TYPES.ConfigService) private configService: IConfigService,
 		@inject(TYPES.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(TYPES.MongooseService) private mongooseService: MongooseService,
+		@inject(TYPES.NotificationService) private notificationService: NotificationService,
 		@inject(TYPES.UserController) private userController: UserController,
 		@inject(TYPES.MeetingController) private meetingController: MeetingController,
 	) {
@@ -56,6 +58,7 @@ export class App {
 		this.useRoutes();
 		this.useExceptionFilters();
 		await this.mongooseService.connect();
+		await this.notificationService.runNotificationEngine();
 		this.server = this.app.listen(this.port);
 		this.logger.log(`[APP] Server is running on port ${this.port}`);
 	}

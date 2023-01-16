@@ -5,15 +5,27 @@ import { TYPES } from '../common/constants';
 import { IMeetingRepository } from './meeting.repository';
 import { IMeetingService, MeetingService } from './meeting.service';
 import { Meeting } from './meeting.entity';
+import { NotificationService } from '../notification/notification.service';
+
+type PublicNotificationService = Pick<
+	NotificationService,
+	'runNotificationEngine' | 'setRemindersForMeeting'
+>;
 
 const meetingRepositoryMock: IMeetingRepository = {
 	create: jest.fn(),
 	getAllForUser: jest.fn(),
 };
 
+const notificationServiceMock: PublicNotificationService = {
+	setRemindersForMeeting: jest.fn(),
+	runNotificationEngine: jest.fn(),
+};
+
 const container = new Container();
 let meetingService: IMeetingService;
 let meetingRepository: IMeetingRepository;
+let notificationService: PublicNotificationService;
 
 beforeAll(() => {
 	container.bind<IMeetingService>(TYPES.MeetingService).to(MeetingService);
@@ -26,6 +38,7 @@ beforeAll(() => {
 
 	meetingService = container.get<IMeetingService>(TYPES.MeetingService);
 	meetingRepository = container.get<IMeetingRepository>(TYPES.MeetingRepository);
+	notificationService = container.get<PublicNotificationService>(TYPES.NotificationService);
 });
 
 const mockUserMeetings: Pick<Meeting, 'time'>[] = [

@@ -9,6 +9,7 @@ import { ILogger, LoggerService } from './logger/logger.service';
 import { IMeetingsController, MeetingController } from './meeting/meeting.controller';
 import { IMeetingRepository, MeetingRepository } from './meeting/meeting.repository';
 import { IMeetingService, MeetingService } from './meeting/meeting.service';
+import { NotificationService } from './notification/notification.service';
 import { TYPES } from './common/constants';
 import { UserController, IUserController } from './user/user.controller';
 import { UserRepository, IUserRepository } from './user/user.repository';
@@ -24,6 +25,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IExceptionFilter>(TYPES.ExceptionFilter).to(ExceptionFilter);
 	bind<MongooseService>(TYPES.MongooseService).to(MongooseService).inSingletonScope();
 	bind<IConfigService>(TYPES.ConfigService).to(ConfigService).inSingletonScope();
+	bind<NotificationService>(TYPES.NotificationService).to(NotificationService).inSingletonScope();
 	bind<IUserController>(TYPES.UserController).to(UserController);
 	bind<IUserService>(TYPES.UserService).to(UserService);
 	bind<IUserRepository>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
