@@ -16,6 +16,7 @@ import { ILogger } from '../logger/logger.service';
 export interface IUserController {
 	login: (req: Request, res: Response, next: NextFunction) => void;
 	register: (req: Request, res: Response, next: NextFunction) => void;
+	seed: (req: Request, res: Response, next: NextFunction) => void;
 }
 
 @injectable()
@@ -104,5 +105,18 @@ export class UserController extends BaseController implements IUserController {
 				},
 			);
 		});
+	}
+
+	async seed(
+		{ body }: Request<{}, {}, UserRegisterDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const allUsers = await this.userService.getAllUsers();
+		if (allUsers.length) {
+			return next(new HTTPError(409, 'Database has already been seeded', '/seed'));
+		}
+		const usersDataForRegister = await this.userService.seedUsersFromFile();
+		this.send(res, 200, usersDataForRegister);
 	}
 }

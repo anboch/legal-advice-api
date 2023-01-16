@@ -8,6 +8,7 @@ import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { User } from './user.entity';
 import { IUserRepository } from './user.repository';
+import { usersDataForSeed } from './usersDataForSeed';
 
 export interface IUserService {
 	createUser: (dto: UserRegisterDto) => Promise<User>;
@@ -15,6 +16,7 @@ export interface IUserService {
 	getUserByPhone: (phoneNumber: string) => Promise<User | null>;
 	getUserById: (userId: string) => Promise<User | null>;
 	getAllUsers: () => Promise<User[]>;
+	seedUsersFromFile: () => Promise<UserRegisterDto[]>;
 }
 
 @injectable()
@@ -57,5 +59,13 @@ export class UserService implements IUserService {
 
 	async getAllUsers(): Promise<User[]> {
 		return this.userRepository.findAll();
+	}
+
+	async seedUsersFromFile(): Promise<UserRegisterDto[]> {
+		const usersDataForRegister: UserRegisterDto[] = usersDataForSeed;
+		for (const userCreateData of usersDataForRegister) {
+			await this.createUser(userCreateData);
+		}
+		return usersDataForRegister;
 	}
 }
