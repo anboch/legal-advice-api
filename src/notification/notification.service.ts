@@ -61,7 +61,7 @@ export class NotificationService {
 	): Promise<void> {
 		try {
 			if (process.env.NODE_ENV === 'test') {
-				return this.writeToLogFile(message);
+				this.writeToLogFile('TEST-' + message);
 			}
 			if (!this.agendaClient) {
 				this.logger.error(`[NotificationService] Agenda is not defined while setting a reminder`);
