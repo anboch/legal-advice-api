@@ -1,4 +1,4 @@
-FROM node:16.17-alpine as build
+FROM node:bullseye as build
 WORKDIR /opt/app
 ADD *.json ./
 RUN npm install
@@ -7,7 +7,7 @@ RUN npm run test
 RUN npm run test:e2e
 RUN npm run build
 
-FROM node:16.17-alpine
+FROM node:bullseye
 WORKDIR /opt/app
 ADD package.json ./
 RUN npm install --omit=dev
