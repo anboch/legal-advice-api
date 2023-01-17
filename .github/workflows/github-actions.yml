@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Publish to registy
-        uses: elgohr/Publish-Docker-Github-Action@v4
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v5
         with:
           registry: ghcr.io
-          name: ghcr.io/anboch/legal-advice-api
+          name: anboch/legal-advice-api
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          tags: "prod"
+          tags: "test-mode"

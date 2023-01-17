@@ -12,4 +12,6 @@ WORKDIR /opt/app
 ADD package.json ./
 RUN npm install --omit=dev
 COPY --from=build /opt/app/dist ./dist
-CMD ["node", "./dist/main.js"]
+EXPOSE 5000
+ENV NODE_ENV=test
+CMD ["node", "./dist/src/main.js"]
