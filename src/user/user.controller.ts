@@ -44,7 +44,6 @@ export class UserController extends BaseController implements IUserController {
 				path: '/seed',
 				method: 'get',
 				func: this.seed,
-				middlewares: [new ValidateMiddleware(UserRegisterDto)],
 			},
 		]);
 	}
